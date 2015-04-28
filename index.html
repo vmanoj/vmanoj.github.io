@@ -1,0 +1,43 @@
+<!doctype>
+<html>
+	<head>
+		<title>URL Shortner</title>
+		<script type="text/javascript">
+			function geturl(uid)
+			{
+				alert(uid);
+				longUrl = uid;
+				var request = gapi.client.urlshortener.url.insert({
+				'resource': {
+				'longUrl': longUrl
+					}
+				});
+				request.execute(function(response) 
+				{
+					if(response.id != null)
+					{
+						str ="<b>Long URL:</b>"+longUrl+"<br>";
+						str +="<b>Short URL:</b> <a href='"+response.id+"'>"+response.id+"</a><br>";
+						document.getElementById("result").innerHTML = str;
+					}
+					else
+					{
+						alert("error: creating short url");
+					}	
+				});	
+			}
+			function init() 
+			{
+				gapi.client.setApiKey("AIzaSyAESI4vt0fkyT9ilRS6bub255RzpIEzj8c");
+				gapi.client.load('urlshortener', 'v1',function(){});
+		      }
+		</script>
+		<script src="https://apis.google.com/js/client.js?onload=init"></script>
+	</head>
+	<body>
+		<strong>URL Shortner</strong>
+		<input type="text" id="urlval" value="https://developers.google.com/api-client-library/javascript/samples/samples">
+		<input type="button" value="Submit" onclick="geturl(document.getElementById('urlval').value)">
+		<div id="result"></div>
+	</body>
+</html>
